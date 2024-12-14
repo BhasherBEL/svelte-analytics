@@ -1,58 +1,72 @@
-# create-svelte
+# Svelte-analytics
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Svelte-analytics is an opinionated svelte-kit library to handle analytics easily. It requires svelte 5 and a [plausible](https://plausible.io) server. It acts as a server-side only analytics middleware, respect user privacy and do not send any [PII](https://en.wikipedia.org/wiki/Personal_data).
 
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+## Features
 
-## Creating a project
+## Planned features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- None for now!
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Usage
 
-# create a new project in my-app
-npx sv create my-app
+### Installation
+
+```sh
+npm install @bhasher/svelte-analytics@latest
 ```
 
-## Developing
+### Initialization
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+`Svelte-analytics` needs to be initialized somewhere and be accessible to the rest of the back-end.
 
-```bash
-npm run dev
+```ts
+# analytics.ts
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+import { Analytics } from '@bhasher/Svelte-analytics';
+
+export default new Analytics('my-website', 'https://plausible.domain.tld')
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+### Flows
 
-## Building
-
-To build your library:
-
-```bash
-npm run package
+Every tracking method requires at least a `RequestEvent` object. The methods are asynchronous, but errors can be caught as for any asynchronous function:
+```ts
+analytics.trackSomething(event).catch(console.warn);
 ```
 
-To create a production version of your showcase app:
+#### Page view
 
-```bash
-npm run build
+```ts
+analytics.trackPlausiblePageview(event);
 ```
 
-You can preview the production build with `npm run preview`.
+#### Register
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```ts
+analytics.trackPlausibleRegister(
+    event, 
+    'password', // method
+    'success' // result
+);
+```
 
-## Publishing
+#### Login
 
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
+```ts
+analytics.trackPlausibleLogin(
+    event,
+    'password', // method
+    'success' //result
+)
+```
 
-To publish your library to [npm](https://www.npmjs.com):
+#### Custom
 
-```bash
-npm publish
+```ts
+analytics.trackPlausibleCustom(
+    event,
+    'event-name',
+    { 'test': true } // props
+)
 ```

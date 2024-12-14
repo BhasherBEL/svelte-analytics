@@ -1,6 +1,6 @@
 {
   "name": "@bhasher/svelte-analytics",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "author": {
     "name": "Bhasher",
     "email": "<npm+svelte-analytics.contact@bhasher.com>",
@@ -10,6 +10,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bhasherbel/svelte-analytics.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "package": "svelte-kit sync && svelte-package && publint",
